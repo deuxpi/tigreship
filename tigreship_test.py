@@ -2,6 +2,7 @@ import unittest
 
 import tigreship
 
+
 class TestPlayer:
     def __init__(self):
         self.target_called = False
@@ -22,6 +23,7 @@ class TestPlayer:
     def sunk(self, ship):
         self.sunk_ship = ship
 
+
 class TestGrid(tigreship.Grid):
     hits = None
     sunk_ship = None
@@ -36,6 +38,7 @@ class TestGrid(tigreship.Grid):
     def will_hit(cls, hits, ship=None):
         cls.hits = hits
         cls.sunk_ship = ship
+
 
 class TigreshipTest(unittest.TestCase):
     def setUp(self):
@@ -68,44 +71,48 @@ class TigreshipTest(unittest.TestCase):
         self.game.play_turn(0)
         self.assertEqual(ship, self.first_player.sunk_ship)
 
+
 class GridTest(unittest.TestCase):
     def setUp(self):
         self.ship = tigreship.Ship('Test', 3)
         self.grid = tigreship.Grid()
 
     def test_place_outside_grid(self):
-        placements = [(-1, 0, 'horizontal'),
-                      (9, 0, 'horizontal'),
-                      (0, -1, 'horizontal'),
-                      (0, 11, 'horizontal'),
-                      (-1, 0, 'vertical'),
-                      (0, -1, 'vertical'),
-                      (11, 0, 'vertical'),
-                      (0, 9, 'vertical'),
-                     ]
+        placements = [
+            (-1, 0, 'horizontal'),
+            (9, 0, 'horizontal'),
+            (0, -1, 'horizontal'),
+            (0, 11, 'horizontal'),
+            (-1, 0, 'vertical'),
+            (0, -1, 'vertical'),
+            (11, 0, 'vertical'),
+            (0, 9, 'vertical'),
+            ]
         for x, y, orientation in placements:
             self.assertFalse(self.grid.can_place(self.ship, x, y, orientation))
 
     def test_place_inside_grid(self):
-        placements = [(0, 0, 'horizontal'),
-                      (7, 0, 'horizontal'),
-                      (0, 9, 'horizontal'),
-                      (0, 0, 'vertical'),
-                      (0, 7, 'vertical'),
-                      (9, 0, 'vertical'),
-                     ]
+        placements = [
+            (0, 0, 'horizontal'),
+            (7, 0, 'horizontal'),
+            (0, 9, 'horizontal'),
+            (0, 0, 'vertical'),
+            (0, 7, 'vertical'),
+            (9, 0, 'vertical'),
+            ]
         for x, y, orientation in placements:
             self.assertTrue(self.grid.can_place(self.ship, x, y, orientation))
 
     def test_place_over(self):
         self.grid.place_ship(self.ship, 2, 2, 'horizontal')
-        placements = [(0, 2, 'horizontal'),
-                      (2, 2, 'horizontal'),
-                      (4, 2, 'horizontal'),
-                      (2, 0, 'vertical'),
-                      (2, 2, 'vertical'),
-                      (4, 0, 'vertical'),
-                     ]
+        placements = [
+            (0, 2, 'horizontal'),
+            (2, 2, 'horizontal'),
+            (4, 2, 'horizontal'),
+            (2, 0, 'vertical'),
+            (2, 2, 'vertical'),
+            (4, 0, 'vertical'),
+            ]
         for x, y, orientation in placements:
             self.assertFalse(self.grid.can_place(self.ship, x, y, orientation))
 

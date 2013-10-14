@@ -2,12 +2,14 @@ from collections import namedtuple
 import sys
 
 Ship = namedtuple('Ship', ['name', 'length'])
-SHIPS = [Ship('Aircraft Carrier', 5),
-         Ship('Battleship', 4),
-         Ship('Submarine', 3),
-         Ship('Destroyer', 3),
-         Ship('Patrol Boat', 2),
-        ]
+SHIPS = [
+    Ship('Aircraft Carrier', 5),
+    Ship('Battleship', 4),
+    Ship('Submarine', 3),
+    Ship('Destroyer', 3),
+    Ship('Patrol Boat', 2),
+    ]
+
 
 class Grid:
     def __init__(self):
@@ -73,6 +75,7 @@ class Grid:
                     return False
         return True
 
+
 class Tigreship:
     def __init__(self, first_player, second_player, grid=Grid):
         self.players = [first_player, second_player]
@@ -113,6 +116,7 @@ class Tigreship:
     def winning(self, turn):
         return self.grids[1 - turn].all_sunk()
 
+
 def main():
     if len(sys.argv) < 3:
         print "Usage: %s PLAYER1 PLAYER2" % sys.argv[0]
@@ -124,4 +128,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

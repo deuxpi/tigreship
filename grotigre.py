@@ -1,5 +1,6 @@
 import random
 
+
 class Player:
     def place_ship(self, ship):
         """Returns the coordinates and orientation of a ship to be placed on
@@ -8,7 +9,7 @@ class Player:
 
         The `ship` argument contains an object with name and a length
         attibutes.
-        
+
         The returned value is a tuple composed of the horizontal and vertical
         indices and a string that specifies the orientation."""
         x = random.randint(0, 9)
