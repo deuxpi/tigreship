@@ -26,8 +26,6 @@ class Grid:
                 x += 1
             elif orientation == 'vertical':
                 y += 1
-            else:
-                raise
         return True
 
     def can_place(self, ship, x, y, orientation):
@@ -46,15 +44,11 @@ class Grid:
                 return False
         return True
 
-    def sunk(self, ship, x, y):
-        if x > 0 and self.grid[x-1][y] == ship:
-            return False
-        if y > 0 and self.grid[x][y-1] == ship:
-            return False
-        if x < 9 and self.grid[x+1][y] == ship:
-            return False
-        if y < 9 and self.grid[x][y+1] == ship:
-            return False
+    def sunk(self, ship):
+        for x in range(10):
+            for y in range(10):
+                if self.grid[x][y] == ship:
+                    return False
         return True
 
     def fire(self, x, y):
@@ -62,11 +56,10 @@ class Grid:
             return False, None
         ship = self.grid[x][y]
         hit = ship is not None
-        sunk_ship = None
-        if hit and self.sunk(ship, x, y):
-            sunk_ship = ship
         self.grid[x][y] = None
-        return hit, sunk_ship
+        if hit and self.sunk(ship):
+            return True, ship
+        return hit, None
 
     def all_sunk(self):
         for x in range(10):
@@ -126,5 +119,5 @@ def main():
     game = Tigreship(first_player, second_player)
     game.start()
 
-if __name__ == '__main__':
+if __name__ == '__main__': # pragma: no cover
     main()

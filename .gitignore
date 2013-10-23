@@ -1,2 +1,6 @@
 *.pyc
 *.swp
+.coverage
+.noseids
+nosetests.xml
+coverage.xml

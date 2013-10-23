@@ -8,6 +8,7 @@ class TestPlayer:
         self.target_called = False
         self.hit_called = False
         self.missed_called = False
+        self.place_ship_called = False
         self.sunk_ship = None
 
     def target(self):
@@ -22,6 +23,10 @@ class TestPlayer:
 
     def sunk(self, ship):
         self.sunk_ship = ship
+
+    def place_ship(self, ship):
+        self.place_ship_called = True
+        return 0, 0, 'vertical'
 
 
 class TestGrid(tigreship.Grid):
@@ -38,6 +43,11 @@ class TestGrid(tigreship.Grid):
     def will_hit(cls, hits, ship=None):
         cls.hits = hits
         cls.sunk_ship = ship
+
+
+class DummyGrid:
+    def place_ship(self, ship, x, y, orientation):
+        return True
 
 
 class TigreshipTest(unittest.TestCase):
@@ -70,6 +80,24 @@ class TigreshipTest(unittest.TestCase):
         TestGrid.will_hit(True, ship)
         self.game.play_turn(0)
         self.assertEqual(ship, self.first_player.sunk_ship)
+
+    def test_setup(self):
+        self.game = tigreship.Tigreship(self.first_player, self.second_player,
+                                        grid=DummyGrid)
+        self.game.setup()
+        self.assertTrue(self.first_player.place_ship_called)
+        self.assertTrue(self.second_player.place_ship_called)
+
+    def test_full_game(self):
+        import sys
+        sys.argv = ['tigreship.py', 'grotigre', 'grotigre']
+        tigreship.main()
+
+    def test_cli_missing_arguments(self):
+        import sys
+        sys.argv = ['tigreship.py']
+        with self.assertRaises(SystemExit):
+            tigreship.main()
 
 
 class GridTest(unittest.TestCase):
@@ -116,6 +144,18 @@ class GridTest(unittest.TestCase):
         for x, y, orientation in placements:
             self.assertFalse(self.grid.can_place(self.ship, x, y, orientation))
 
+    def test_invalid_orientation(self):
+        self.assertFalse(self.grid.can_place(self.ship, 2, 2, 'invalid'))
+        self.assertFalse(self.grid.place_ship(self.ship, 2, 2, 'invalid'))
+
+    def test_valid_placement(self):
+        self.assertTrue(self.grid.place_ship(self.ship, 2, 2, 'horizontal'))
+        self.assertTrue(self.grid.place_ship(self.ship, 2, 3, 'vertical'))
+
+    def test_invalid_placement(self):
+        self.grid.place_ship(self.ship, 2, 2, 'horizontal')
+        self.assertFalse(self.grid.place_ship(self.ship, 2, 2, 'horizontal'))
+
     def test_fire_hit(self):
         self.grid.place_ship(self.ship, 2, 2, 'horizontal')
         targets = [(2, 2), (3, 2), (4, 2)]
@@ -138,6 +178,14 @@ class GridTest(unittest.TestCase):
         hit, sunk_ship = self.grid.fire(3, 2)
         self.assertIsNone(sunk_ship)
         hit, sunk_ship = self.grid.fire(4, 2)
+        self.assertEqual(self.ship, sunk_ship)
+
+        self.grid.place_ship(self.ship, 2, 4, 'vertical')
+        hit, sunk_ship = self.grid.fire(2, 5)
+        self.assertIsNone(sunk_ship)
+        hit, sunk_ship = self.grid.fire(2, 4)
+        self.assertIsNone(sunk_ship)
+        hit, sunk_ship = self.grid.fire(2, 6)
         self.assertEqual(self.ship, sunk_ship)
 
     def test_all_sunk(self):

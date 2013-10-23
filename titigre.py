@@ -3,7 +3,7 @@ import random
 
 class Player:
     def __init__(self):
-        self.memory=[]
+        self.memory = []
 
     def place_ship(self, ship):
         """Returns the coordinates and orientation of a ship to be placed on
@@ -29,7 +29,6 @@ class Player:
             if shoot not in self.memory:
                 self.memory.append(shoot)
                 return shoot
-
 
     def hit(self, x, y):
         """Called in response to a successful guess returned from the target()
