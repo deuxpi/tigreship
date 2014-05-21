@@ -1,0 +1,4 @@
+coveralls
+nose
+nosexcover
+yanc

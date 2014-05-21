@@ -1,6 +1,8 @@
 Tigreship
 =========
 
+[![Coverage Status](https://img.shields.io/coveralls/deuxpi/tigreship.svg)](https://coveralls.io/r/deuxpi/tigreship?branch=master) [![Build Status](https://travis-ci.org/deuxpi/tigreship.svg?branch=master)](https://travis-ci.org/deuxpi/tigreship)
+
 Description
 -----------
 
