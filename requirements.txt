@@ -1,3 +1,4 @@
+buildozer
 coveralls
 nose
 nosexcover
