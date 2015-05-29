@@ -1,4 +1,2 @@
 coveralls
 nose
-nosexcover
-yanc

@@ -1,3 +1,4 @@
+from __future__ import print_function
 from collections import namedtuple
 import sys
 
@@ -82,7 +83,7 @@ class Tigreship:
             if self.winning(turn):
                 break
             turn = 1 - turn
-        print "Player %d won!" % (turn + 1)
+        print("Player %d won!" % (turn + 1))
 
     def setup(self):
         for player, grid in zip(self.players, self.grids):
@@ -96,12 +97,12 @@ class Tigreship:
         player = self.players[turn]
         grid = self.grids[1 - turn]
         x, y = player.target()
-        print "Player %d fires at %s-%d" % (turn + 1, chr(x + 65), y + 1)
+        print("Player %d fires at %s-%d" % (turn + 1, chr(x + 65), y + 1))
         hit, sunk_ship = grid.fire(x, y)
         if hit:
             player.hit(x, y)
             if sunk_ship:
-                print "Player %d sunk a %s" % (turn + 1, sunk_ship.name)
+                print("Player %d sunk a %s" % (turn + 1, sunk_ship.name))
                 player.sunk(sunk_ship)
         else:
             player.missed(x, y)
@@ -112,7 +113,7 @@ class Tigreship:
 
 def main():
     if len(sys.argv) < 3:
-        print "Usage: %s PLAYER1 PLAYER2" % sys.argv[0]
+        print("Usage: %s PLAYER1 PLAYER2" % sys.argv[0])
         sys.exit(1)
     first_player = __import__(sys.argv[1]).Player()
     second_player = __import__(sys.argv[2]).Player()
